@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "Instagram",
+    "slug": "tp8-clon-instagram",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0a0a0c"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.tp8.instagramclone"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.tp8.instagramclone"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
