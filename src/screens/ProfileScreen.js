@@ -1,12 +1,8 @@
-// ─────────────────────────────────────────────────────────────
 // ProfileScreen.js — Perfil de usuario emulado
-// Atribución IA (ver REFLEXION.md e HISTORIAL-IA.md):
-//   · IA: resolvió la grilla de 3 columnas con FlatList numColumns={3}
-//     calculando ITEM_SIZE = ancho / 3 para que no desborde.
-//   · Yo: armé la cabecera del perfil (avatar, métricas, bio, botones
-//     Editar/Compartir) y usé Pressable en la grilla para demostrar
-//     los dos componentes táctiles (Pressable + TouchableOpacity).
-// ─────────────────────────────────────────────────────────────
+// IA: resolvió la grilla de 3 columnas con FlatList numColumns={3}
+// calculando ITEM_SIZE = ancho / 3 para que no desborde, y sumó Pressable en la grilla para demostrar
+// los dos componentes táctiles (Pressable + TouchableOpacity).
+// Nosotros: armamos la cabecera del perfil (avatar, métricas, bio, botones Editar/Compartir) 
 import { useState, useEffect } from 'react';
 import {
   View,
@@ -26,7 +22,7 @@ import { useNavigation } from '@react-navigation/native';
 import { obtenerGatos } from '../api/catApi';
 import { usuarioActual, leyendas, tiempos, comentariosEjemplo } from '../data/userData';
 
-// El ancho de cada celda es 1/3 del ancho de pantalla -> grilla simétrica
+// El ancho de cada celda es 1/3 del ancho de pantalla 
 const CONTAINER_WIDTH = Platform.OS === 'web' ? 390 : Dimensions.get('window').width;
 const ITEM_SIZE = CONTAINER_WIDTH / 3;
 

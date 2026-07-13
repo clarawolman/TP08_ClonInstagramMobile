@@ -1,9 +1,8 @@
 // Stories.js — Carrusel horizontal de historias
 // (se usa como ListHeaderComponent del FlatList del feed).
-// Atribución IA (ver REFLEXION.md):
-//   · IA: propuso el ScrollView horizontal con el "anillo" de color.
-//   · Yo: agregué el badge "+" de la historia propia y el borde gris
-//     para diferenciarla de las demás.
+// IA: el ScrollView horizontal con el anillo de color.
+// Nosotrod: agreguamos el "+" de la historia propia y el borde gris para diferenciarla de las demás.
+
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { historias } from '../data/userData';

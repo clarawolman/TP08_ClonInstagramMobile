@@ -2,7 +2,7 @@
 
 Migración del TP anterior (Instagram Web en React) hacia React Native bajo el
 ecosistema de Expo. El feed consume imágenes en tiempo real desde 
-The Cat API con Axios y las muestra con `FlatList`.
+The Cat API con Axios y las muestra.
 
 ---
 
@@ -20,14 +20,14 @@ emulador de Android / `i` para el simulador de iOS / `w` para abrir en el navega
 
 ## Referencia visual (Figma)
 
-- Comunidad Figma: [Instagram Mobile UI Kit](https://www.figma.com/community/file/1235135369163092252)
+- [Instagram Mobile UI Kit](https://www.figma.com/community/file/1235135369163092252)
 
 ---
 
 ## Árbol de directorios
 
 ```
-app/  → en este proyecto la lógica de pantallas está dentro de src/
+app/  en este proyecto la lógica de pantallas está dentro de src/
 
 src/
 ├── api/
@@ -97,8 +97,8 @@ Expone `obtenerGatos(cantidad)`: hace el `axios.get` a The Cat API y devuelve el
 
 ### Efectos (`useEffect`)
 
-- **`HomeScreen`**: al montar → `obtenerGatos(15)` → mapea y setea `publicaciones`.
-- **`ProfileScreen`**: al montar → `obtenerGatos(12)` → mapea y setea `publicaciones`.
+- **`HomeScreen`**: `obtenerGatos(15)` → mapea y setea `publicaciones`.
+- **`ProfileScreen`**: `obtenerGatos(12)` → mapea y setea `publicaciones`.
 
 ---
 

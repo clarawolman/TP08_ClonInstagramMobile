@@ -1,11 +1,8 @@
 // catApi.js — Servicio de consumo de la API (The Cat API)
-// Centraliza las llamadas con Axios para no repetir la URL en cada
-// pantalla. La API solo devuelve id, url, width, height.
-// Atribución IA (ver REFLEXION.md):
-//   · IA: me mostró cómo crear una instancia de axios con baseURL.
-//   · Yo: separé esto en su propio módulo src/api/ para tener el
-//     código de red en un solo lugar (más ordenado que ponerlo
-//     suelto en cada screen).
+// Centraliza las llamadas con Axios para no repetir la URL en cada pantalla. 
+// La API solo devuelve id, url, width, height.
+// IA: me mostró cómo crear una instancia de axios con baseURL.
+// Nosotros: separamos esto en su propio módulo src/api/ para tener el código en un solo lugar (más ordenado que ponerlo suelto en cada screen).
 import axios from 'axios';
 
 // Instancia reutilizable de Axios apuntando a The Cat API

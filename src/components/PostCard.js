@@ -1,11 +1,7 @@
 // PostCard.js — Componente atómico de cada post del feed
 // Recibe TODA su información por props (post + onPress).
-// Atribución IA (ver REFLEXION.md):
-//   · IA: generó la maqueta JSX (header, imagen, barra de acciones,
-//     likes, leyenda) y la lógica del like con useState.
-//   · Yo: ajusté paddings/márgenes y tamaños de íconos mirando la
-//     referencia de Figma para que quede fiel a Instagram, y sumé
-//     el estado "guardado" (bookmark).
+// IA: generó la base (header, imagen, barra de acciones, likes, leyenda) y la lógica del like con useState.
+// Nosotros: ajustamos paddings/márgenes y tamaños de íconos mirando la referencia de Figma para que quede parecido a Instagram, y sumamos el estado "guardado" (bookmark).
 
 import { useState } from 'react';
 import {
@@ -88,7 +84,7 @@ export default function PostCard({ post, onPress }) {
       {/* Contador de Me gusta */}
       <Text style={styles.likes}>{likes.toLocaleString()} Me gusta</Text>
 
-      {/* Pie del posteo (caption) */}
+      {/* Pie del posteo (descripción) */}
       <View style={styles.captionRow}>
         <Text>
           <Text style={styles.captionUser}>{post.autorUsername} </Text>

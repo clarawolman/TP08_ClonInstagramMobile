@@ -1,13 +1,7 @@
-// ─────────────────────────────────────────────────────────────
 // HomeScreen.js — Feed principal (Home)
-// Atribución IA (ver REFLEXION.md e HISTORIAL-IA.md):
-//   · IA: escribió el patrón useEffect + llamada a la API con los
-//     estados cargando/error y el FlatList con ListHeader.
-//   · Yo: agregué la función construirPost() que "mezcla" la imagen
-//     real de la API con datos simulados (autor, leyenda, ubicación,
-//     likes) para que cada post parezca uno real de Instagram, y moví
-//     la llamada de Axios a src/api/catApi.js.
-// ─────────────────────────────────────────────────────────────
+// IA: escribió el patrón useEffect + llamada a la API con los estados cargando/error y el FlatList con ListHeader.
+// Nosotros: agregamos la función construirPost() que une la imagen de la API con datos simulados (autor, leyenda, ubicación,
+// likes) para que cada post parezca uno real de Instagram.
 import { useState, useEffect } from 'react';
 import {
   FlatList,
@@ -21,7 +15,7 @@ import Stories from '../components/Stories';
 import { obtenerGatos } from '../api/catApi';
 import { autoresPost, leyendas, ubicaciones, tiempos, comentariosEjemplo } from '../data/userData';
 
-// Combina una imagen de la API con datos simulados para armar un "post"
+// Combina una imagen de la API con datos simulados para armar un post
 function construirPost(imagenGato, indice) {
   const autor = autoresPost[indice % autoresPost.length];
   return {

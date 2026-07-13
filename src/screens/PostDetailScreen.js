@@ -1,12 +1,8 @@
-// ─────────────────────────────────────────────────────────────
 // PostDetailScreen.js — Vista extendida / detalle del post
-// Recibe el objeto "post" completo por route.params.
-// Atribución IA (ver REFLEXION.md e HISTORIAL-IA.md):
-//   · IA: armó el layout scrolleable con imagen HD, comentarios
-//     simulados y el like reactivo (useState cambia color + contador).
-//   · Yo: sumé las etiquetas (#gatos), el campo "Agrega un comentario"
-//     y el estado "guardado" independiente del feed.
-// ─────────────────────────────────────────────────────────────
+// IA: armó el layout scrolleable con imagen HD, comentarios
+// simulados y el like reactivo (useState cambia color + contador).
+// Nosotros: sumamos las etiquetas, el campo "Agrega un comentario"
+// y el estado "guardado" independiente del feed.
 import { useState } from 'react';
 import {
   View,
@@ -93,7 +89,7 @@ export default function PostDetailScreen({ route }) {
         {/* Contador de likes */}
         <Text style={styles.likes}>{likes.toLocaleString()} Me gusta</Text>
 
-        {/* Leyenda / caption */}
+        {/* Leyenda */}
         <View style={styles.captionRow}>
           <Text>
             <Text style={styles.captionUser}>{post.autorUsername} </Text>

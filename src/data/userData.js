@@ -1,10 +1,8 @@
-
 // userData.js — Datos simulados (mock) de la app
 // La API de gatos SOLO devuelve id + url de la imagen, así que acá
-// están los datos "de relleno" (usuario, autores, leyendas, comentarios)
-// que se combinan con cada foto para simular posteos reales de Instagram.
-// Atribución IA: la IA generó ejemplos de leyendas/comentarios en
-// español; yo elegí cuáles dejar y ajusté el usuario del perfil.
+// están los datos "de relleno" (usuario, autores, leyendas, comentarios) que se combinan con cada foto para simular posts reales de Instagram.
+// IA: generó ejemplos de leyendas/comentarios
+// Nosotros: elegimos cuales dejar y ajustamos el usuario del perfil.
 
 export const usuarioActual = {
   id: 'u1',
