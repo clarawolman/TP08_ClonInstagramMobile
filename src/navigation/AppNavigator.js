@@ -6,6 +6,7 @@
 //   · Yo: personalicé los headers (logo serif "Instagram", icono
 //     add-square en el perfil) y los colores de la tab bar.
 
+import { useContext } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -14,12 +15,12 @@ import { Ionicons } from '@expo/vector-icons';
 import HomeScreen from '../screens/HomeScreen';
 import PostDetailScreen from '../screens/PostDetailScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import { UsuarioContext } from '../context/UsuarioContext';
 
 const Tab = createBottomTabNavigator();
 const HomeStack = createNativeStackNavigator();
 const ProfileStack = createNativeStackNavigator();
 
-// Stack del Home: Feed -> Detalle del post
 function HomeNavigator() {
   return (
     <HomeStack.Navigator>
@@ -46,15 +47,16 @@ function HomeNavigator() {
   );
 }
 
-// Stack del Perfil: Perfil -> Detalle del post (desde la grilla)
 function ProfileNavigator() {
+  const { usuario } = useContext(UsuarioContext);
+
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen
         name="ProfileMain"
         component={ProfileScreen}
         options={{
-          headerTitle: 'meow_lover',
+          headerTitle: usuario.username,
           headerStyle: { backgroundColor: '#fff' },
           headerTitleStyle: { fontWeight: '700', fontSize: 16 },
           headerShadowVisible: true,
@@ -77,7 +79,6 @@ function ProfileNavigator() {
   );
 }
 
-// Navegación principal: barra de pestañas inferior (Home / Perfil)
 export default function AppNavigator() {
   return (
     <Tab.Navigator

@@ -13,6 +13,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import AppNavigator from './src/navigation/AppNavigator';
+import { UsuarioProvider } from './src/context/UsuarioContext';
 
 // Evita que la splash se oculte sola antes de que la app esté lista
 SplashScreen.preventAutoHideAsync();
@@ -30,11 +31,12 @@ export default function App() {
     <SafeAreaProvider>
       <View style={styles.outerContainer}>
         <View style={styles.phoneContainer}>
-          <NavigationContainer>
-            {/* StatusBar oscura para contrastar con la cabecera blanca */}
-            <StatusBar style="dark" />
-            <AppNavigator />
-          </NavigationContainer>
+          <UsuarioProvider>
+            <NavigationContainer>
+              <StatusBar style="dark" />
+              <AppNavigator />
+            </NavigationContainer>
+          </UsuarioProvider>
         </View>
       </View>
     </SafeAreaProvider>

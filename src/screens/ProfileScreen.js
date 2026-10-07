@@ -3,7 +3,7 @@
 // calculando ITEM_SIZE = ancho / 3 para que no desborde, y sumó Pressable en la grilla para demostrar
 // los dos componentes táctiles (Pressable + TouchableOpacity).
 // Nosotros: armamos la cabecera del perfil (avatar, métricas, bio, botones Editar/Compartir) 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -16,13 +16,15 @@ import {
   ActivityIndicator,
   Dimensions,
   Platform,
+  Modal,
+  TextInput,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { obtenerGatos } from '../api/catApi';
-import { usuarioActual, leyendas, tiempos, comentariosEjemplo } from '../data/userData';
+import { leyendas, tiempos, comentariosEjemplo } from '../data/userData';
+import { UsuarioContext } from '../context/UsuarioContext';
 
-// El ancho de cada celda es 1/3 del ancho de pantalla 
 const CONTAINER_WIDTH = Platform.OS === 'web' ? 390 : Dimensions.get('window').width;
 const ITEM_SIZE = CONTAINER_WIDTH / 3;
 
@@ -30,8 +32,6 @@ function construirPost(img, i) {
   return {
     id: img.id || `pp-${i}`,
     imagenUrl: img.url,
-    autorUsername: usuarioActual.username,
-    autorAvatar: usuarioActual.avatar,
     leyenda: leyendas[i % leyendas.length],
     ubicacion: 'Buenos Aires, Argentina',
     likes: Math.floor(Math.random() * 5000) + 100,
@@ -42,9 +42,22 @@ function construirPost(img, i) {
 
 export default function ProfileScreen() {
   const navigation = useNavigation();
+  const { usuario, setUsuario } = useContext(UsuarioContext);
   const [publicaciones, setPublicaciones] = useState([]);
   const [cargando, setCargando] = useState(true);
   const [tabActiva, setTabActiva] = useState('publicaciones');
+  const [editando, setEditando] = useState(false);
+  const [form, setForm] = useState(usuario);
+
+  const abrirEdicion = () => {
+    setForm(usuario);
+    setEditando(true);
+  };
+
+  const guardarPerfil = () => {
+    setUsuario({ ...usuario, username: form.username.trim() || usuario.username, name: form.name, bio: form.bio });
+    setEditando(false);
+  };
 
   useEffect(() => {
     async function cargarPublicaciones() {
@@ -60,25 +73,24 @@ export default function ProfileScreen() {
     cargarPublicaciones();
   }, []);
 
-  // Cabecera del perfil (va como ListHeaderComponent de la grilla)
   const ListHeader = () => (
     <View>
       {/* Info del perfil: avatar + métricas dinámicas */}
       <View style={styles.profileHeader}>
         <View style={styles.avatarRing}>
-          <Image source={{ uri: usuarioActual.avatar }} style={styles.avatar} />
+          <Image source={{ uri: usuario.avatar }} style={styles.avatar} />
         </View>
         <View style={styles.statsRow}>
           <View style={styles.stat}>
-            <Text style={styles.statNum}>{publicaciones.length || usuarioActual.postsCount}</Text>
+            <Text style={styles.statNum}>{publicaciones.length || usuario.postsCount}</Text>
             <Text style={styles.statLabel}>publicaciones</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statNum}>{usuarioActual.followers.toLocaleString()}</Text>
+            <Text style={styles.statNum}>{usuario.followers.toLocaleString()}</Text>
             <Text style={styles.statLabel}>seguidores</Text>
           </View>
           <View style={styles.stat}>
-            <Text style={styles.statNum}>{usuarioActual.following}</Text>
+            <Text style={styles.statNum}>{usuario.following}</Text>
             <Text style={styles.statLabel}>seguidos</Text>
           </View>
         </View>
@@ -86,13 +98,13 @@ export default function ProfileScreen() {
 
       {/* Bio */}
       <View style={styles.bio}>
-        <Text style={styles.bioName}>{usuarioActual.name}</Text>
-        <Text style={styles.bioText}>{usuarioActual.bio}</Text>
+        <Text style={styles.bioName}>{usuario.name}</Text>
+        <Text style={styles.bioText}>{usuario.bio}</Text>
       </View>
 
       {/* Botones: Editar perfil / Compartir perfil */}
       <View style={styles.buttons}>
-        <TouchableOpacity style={styles.editBtn}>
+        <TouchableOpacity style={styles.editBtn} onPress={abrirEdicion}>
           <Text style={styles.editBtnText}>Editar perfil</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.shareBtn}>
@@ -135,11 +147,14 @@ export default function ProfileScreen() {
     </View>
   );
 
-  // Cada celda de la grilla usa Pressable (con feedback de opacidad al tocar)
   const renderItem = ({ item }) => (
     <Pressable
       style={({ pressed }) => [styles.gridItem, pressed && styles.gridItemPressed]}
-      onPress={() => navigation.navigate('PostDetail', { post: item })}
+      onPress={() =>
+        navigation.navigate('PostDetail', {
+          post: { ...item, autorUsername: usuario.username, autorAvatar: usuario.avatar },
+        })
+      }
     >
       <Image source={{ uri: item.imagenUrl }} style={styles.gridImage} resizeMode="cover" />
     </Pressable>
@@ -156,6 +171,42 @@ export default function ProfileScreen() {
         ListHeaderComponent={ListHeader}
         showsVerticalScrollIndicator={false}
       />
+
+      <Modal visible={editando} transparent animationType="slide" onRequestClose={() => setEditando(false)}>
+        <View style={styles.modalFondo}>
+          <View style={styles.modalCaja}>
+            <Text style={styles.modalTitulo}>Editar perfil</Text>
+            <Text style={styles.modalLabel}>Usuario</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={form.username}
+              onChangeText={(texto) => setForm({ ...form, username: texto })}
+              autoCapitalize="none"
+            />
+            <Text style={styles.modalLabel}>Nombre</Text>
+            <TextInput
+              style={styles.modalInput}
+              value={form.name}
+              onChangeText={(texto) => setForm({ ...form, name: texto })}
+            />
+            <Text style={styles.modalLabel}>Presentación</Text>
+            <TextInput
+              style={[styles.modalInput, styles.modalInputBio]}
+              value={form.bio}
+              onChangeText={(texto) => setForm({ ...form, bio: texto })}
+              multiline
+            />
+            <View style={styles.buttons}>
+              <TouchableOpacity style={styles.editBtn} onPress={() => setEditando(false)}>
+                <Text style={styles.editBtnText}>Cancelar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={[styles.editBtn, styles.guardarBtn]} onPress={guardarPerfil}>
+                <Text style={[styles.editBtnText, styles.guardarBtnText]}>Guardar</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -284,5 +335,49 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     backgroundColor: '#f0f0f0',
+  },
+  modalFondo: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.4)',
+    justifyContent: 'flex-end',
+  },
+  modalCaja: {
+    backgroundColor: '#fff',
+    borderTopLeftRadius: 16,
+    borderTopRightRadius: 16,
+    paddingTop: 16,
+    paddingBottom: 8,
+  },
+  modalTitulo: {
+    fontWeight: '700',
+    fontSize: 16,
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  modalLabel: {
+    fontSize: 12,
+    color: '#888',
+    paddingHorizontal: 16,
+    marginBottom: 4,
+  },
+  modalInput: {
+    borderWidth: 0.5,
+    borderColor: '#dbdbdb',
+    borderRadius: 8,
+    marginHorizontal: 16,
+    marginBottom: 12,
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    fontSize: 14,
+  },
+  modalInputBio: {
+    minHeight: 60,
+    textAlignVertical: 'top',
+  },
+  guardarBtn: {
+    backgroundColor: '#0095f6',
+  },
+  guardarBtnText: {
+    color: '#fff',
   },
 });

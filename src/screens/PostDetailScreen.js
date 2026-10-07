@@ -3,7 +3,7 @@
 // simulados y el like reactivo (useState cambia color + contador).
 // Nosotros: sumamos las etiquetas, el campo "Agrega un comentario"
 // y el estado "guardado" independiente del feed.
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
   View,
   Text,
@@ -16,16 +16,30 @@ import {
   Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { UsuarioContext } from '../context/UsuarioContext';
 
 const POST_WIDTH = Platform.OS === 'web' ? 390 : '100%';
 
 export default function PostDetailScreen({ route }) {
   const { post } = route.params;
+  const { usuario } = useContext(UsuarioContext);
 
   // Estados locales del detalle (independientes de la tarjeta del feed)
   const [conLike, setConLike] = useState(false);
   const [likes, setLikes] = useState(post.likes);
   const [guardado, setGuardado] = useState(false);
+  const [comentarios, setComentarios] = useState(post.comentarios);
+  const [nuevoComentario, setNuevoComentario] = useState('');
+
+  const publicarComentario = () => {
+    const texto = nuevoComentario.trim();
+    if (!texto) return;
+    setComentarios([
+      ...comentarios,
+      { id: `c-${Date.now()}`, username: usuario.username, texto, tiempo: 'Ahora' },
+    ]);
+    setNuevoComentario('');
+  };
 
   // Like reactivo: cambia el color del corazón y el contador al instante
   const manejarLike = () => {
@@ -107,7 +121,7 @@ export default function PostDetailScreen({ route }) {
 
         {/* Listado simulado de comentarios */}
         <Text style={styles.comentariosTitulo}>Comentarios</Text>
-        {post.comentarios.map((comentario) => (
+        {comentarios.map((comentario) => (
           <View key={comentario.id} style={styles.comentario}>
             <View style={styles.comentarioHeader}>
               <Text style={styles.comentarioUser}>{comentario.username}</Text>
@@ -129,8 +143,11 @@ export default function PostDetailScreen({ route }) {
             style={styles.commentInput}
             placeholder="Agrega un comentario..."
             placeholderTextColor="#aaa"
+            value={nuevoComentario}
+            onChangeText={setNuevoComentario}
+            onSubmitEditing={publicarComentario}
           />
-          <TouchableOpacity>
+          <TouchableOpacity onPress={publicarComentario}>
             <Text style={styles.publishBtn}>Publicar</Text>
           </TouchableOpacity>
         </View>

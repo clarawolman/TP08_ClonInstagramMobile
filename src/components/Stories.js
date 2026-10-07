@@ -3,9 +3,11 @@
 // IA: el ScrollView horizontal con el anillo de color.
 // Nosotrod: agreguamos el "+" de la historia propia y el borde gris para diferenciarla de las demás.
 
+import { useContext } from 'react';
 import { View, Text, Image, ScrollView, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { historias } from '../data/userData';
+import { UsuarioContext } from '../context/UsuarioContext';
 
 function ItemHistoria({ historia }) {
   return (
@@ -26,6 +28,9 @@ function ItemHistoria({ historia }) {
 }
 
 export default function Stories() {
+  const { usuario } = useContext(UsuarioContext);
+  const historiaPropia = { id: 'propia', username: 'Tu historia', avatar: usuario.avatar, esPropia: true };
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -33,7 +38,7 @@ export default function Stories() {
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.scroll}
       >
-        {historias.map((historia) => (
+        {[historiaPropia, ...historias].map((historia) => (
           <ItemHistoria key={historia.id} historia={historia} />
         ))}
       </ScrollView>

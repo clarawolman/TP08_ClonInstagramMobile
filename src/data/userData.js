@@ -16,7 +16,6 @@ export const usuarioActual = {
 };
 
 export const historias = [
-  { id: 'st0', username: 'Tu historia', avatar: 'https://api.dicebear.com/7.x/adventurer/png?seed=meowlover&backgroundColor=b6e3f4', esPropia: true },
   { id: 'st1', username: 'whiskers99',   avatar: 'https://api.dicebear.com/7.x/adventurer/png?seed=whiskers99' },
   { id: 'st2', username: 'fluffycat',    avatar: 'https://api.dicebear.com/7.x/adventurer/png?seed=fluffycat' },
   { id: 'st3', username: 'nala_cat',     avatar: 'https://api.dicebear.com/7.x/adventurer/png?seed=nalacat' },
