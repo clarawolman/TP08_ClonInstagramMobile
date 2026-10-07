@@ -1,3 +1,28 @@
+# TP - Context
+
+## Información
+
+Comparte el **usuario logueado** y su función de actualización. El valor inicial sale de `usuarioActual` (`src/data/userData.js`) y se guarda en un `useState` dentro del Provider.
+
+## Archivo y ruta 
+
+`src/context/UsuarioContext.js` - UsuarioContext
+
+## Componente del Context
+
+`<UsuarioProvider>` envuelve al `NavigationContainer`, así todas las pantallas y componentes de la navegación tienen acceso al usuario.
+
+## Componentes que consumen el Context con `useContext`
+
+`ProfileNavigator`: Muestra el username como título del header del perfil. 
+`ProfileScreen`: Muestra avatar, métricas, nombre y bio. Con "Editar perfil" cambia el usuario. Al abrir un post propio le agrega el username y el avatar actuales.
+`Stories`: "Tu historia" con el avatar del usuario. 
+`PostDetailScreen`: Al publicar un comentario, queda con el username del usuario logueado. 
+
+## Justificación
+
+El usuario logueado es un dato que lo necesitan componentes que están en distintas carpetas y pantallas. Estos componentes no tienen una relación directa entre ellos y para compartirlo con props habría que subir el estado hasta App y pasarlo por los navegadores.
+
 # TP8 — Clon Móvil de Instagram con React Native y Expo
 
 Migración del TP anterior (Instagram Web en React) hacia React Native bajo el
